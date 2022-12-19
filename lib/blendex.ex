@@ -14,11 +14,16 @@ defmodule Blendex do
   """
   def draw_graphic() do
 
-    shapes = [
-      %{type: :cube, size: 2, location: {0, 0, 0}, scale: {1, 1, 1}}
-    ]
+    spacing = 2.2
 
-    draw_shapes(shapes)
+    cubes = 1..10
+    |> Enum.map(&%{type: :cube, size: 2, location: {&1 * spacing, 0, 0}, scale: {1, 1, 1}})
+
+    # shapes = [
+    #   %{type: :cube, size: 2, location: {0, 0, 0}, scale: {1, 1, 1}}
+    # ]
+
+    draw_shapes(cubes)
   end
 
 

@@ -22,7 +22,7 @@ defmodule Blendex.Worker do
   def handle_call({:draw_shapes, shapes}, _from, socket) do
     shapes
     |> Enum.map(&Converter.generate_command/1)
-    |> Enum.each(&:gen_tcp.send(socket, &1))
+    |> Enum.map(fn command -> :gen_tcp.send(socket, command); :timer.sleep(200) end)
 
     {:reply, :ok, socket}
   end
