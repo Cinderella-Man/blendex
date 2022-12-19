@@ -1,6 +1,15 @@
 # Blendex
 
-**TODO: Add description**
+Pre-alpha - do not use!
+
+```
+$ iex -S mix
+...
+iex(1)> Blendex.Worker.send_command("bpy.ops.mesh.primitive_cube_add(size=2, enter_editmode=False, align='WORLD', location=(1,2,3), scale=(1,1,1))")
+:ok
+```
+
+
 
 ## Installation
 
