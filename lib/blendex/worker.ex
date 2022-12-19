@@ -4,6 +4,8 @@ defmodule Blendex.Worker do
   @blender_host Application.compile_env(:blendex, :blender_host)
   @blender_port Application.compile_env(:blendex, :blender_port)
 
+  alias Blendex.Converter
+
   def start_link(args) do
     GenServer.start_link(__MODULE__, args, name: __MODULE__)
   end
@@ -17,13 +19,12 @@ defmodule Blendex.Worker do
     {:noreply, socket}
   end
 
-  def send_command(command) do
-    GenServer.call(__MODULE__, {:command, command})
-  end
+  def handle_call({:draw_shapes, shapes}, _from, socket) do
+    shapes
+    |> Enum.map(&Converter.generate_command/1)
+    |> Enum.each(&:gen_tcp.send(socket, &1))
 
-  def handle_call({:command, command}, _from, socket) do
-    res = :gen_tcp.send(socket, command)
-    {:reply, res, socket}
+    {:reply, :ok, socket}
   end
 
   def handle_info({:tcp, _port, _command}, state) do

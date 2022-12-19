@@ -8,11 +8,21 @@ defmodule Blendex do
 
   ## Examples
 
-      iex> Blendex.hello()
-      :world
+      iex> Blendex.draw_shapes()
+      :ok
 
   """
-  def hello do
-    :world
+  def draw_graphic() do
+
+    shapes = [
+      %{type: :cube, size: 2, location: {0, 0, 0}, scale: {1, 1, 1}}
+    ]
+
+    draw_shapes(shapes)
+  end
+
+
+  def draw_shapes(shapes) do
+    GenServer.call(Blendex.Worker, {:draw_shapes, shapes})
   end
 end
