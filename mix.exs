@@ -16,8 +16,7 @@ defmodule Blendex.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {Blendex.Supervisor, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :inets]
     ]
   end
 
