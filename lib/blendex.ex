@@ -3,23 +3,12 @@ defmodule Blendex do
   Documentation for `Blendex`.
   """
 
-  @blender_host Application.compile_env(:blendex, :blender_host, "localhost")
-  @blender_port Application.compile_env(:blendex, :blender_port, "8080")
-
   alias Blendex.Converter
 
   require Logger
 
   @doc """
   Hello world.
-
-  :inets.start()
-  :httpc.request(:get, {"http://localhost:8080/q/g/ew", []}, [], [])
-
-  body = "My text"
-  request = {"http://localhost:8080", [], 'text/plain', body}
-  :httpc.request(:post, request, [], [])
-
 
   ## Examples
 
@@ -28,26 +17,20 @@ defmodule Blendex do
 
   """
 
-  def send_commands(commands) do
-    :inets.start()
+  def generate_commands(commands, file_path \\ "output.py") do
 
-    body = commands
+    data = commands
     |> Enum.map(&Converter.transpile_command/1)
     |> Enum.join("\n")
 
     Logger.debug("""
     ------------------OUTGOING--------------------
-    Request body to be send to the Blender server:
-    #{body}\
-    to the Blender server
+    Data to be saved to file:
+    #{data}\n
     """)
 
-    request = {"http://#{@blender_host}:#{@blender_port}", [], 'text/plain', body}
-    {:ok, res} = :httpc.request(:post, request, [], [])
+    File.write(file_path, data)
 
-    Logger.debug("""
-    -------------------INCOMING-------------------
-    Response from the Blender server:\n #{elem(res, 2)}
-    """)
+    Logger.debug("Data saved")
   end
 end
